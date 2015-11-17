@@ -454,9 +454,10 @@ class psycopg_build_ext(build_ext):
         if hasattr(self, "finalize_" + sys.platform):
             getattr(self, "finalize_" + sys.platform)()
 
-    def run(self):
-        import pdb; pdb.set_trace()  # BREAKPOINT
-        build_ext.run(self)
+        print('LB 12')
+        from pprint import pprint
+        pprint(self.__dict__)
+        pprint(self.build_ext.__dict__)
 
 
 def is_py_64():

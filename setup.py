@@ -242,10 +242,13 @@ class psycopg_build_ext(build_ext):
     boolean_options.extend(('use-pydatetime', 'have-ssl', 'static-libpq'))
 
     def __init__(self, *args, **kwargs):
+        print('LB 1')
         build_ext.__init__(self, *args, **kwargs)
 
     def initialize_options(self):
+        print('LB 2')
         build_ext.initialize_options(self)
+        print('LB 3')
         self.use_pg_dll = 1
         self.pgdir = None
         self.mx_include_dir = None
@@ -253,6 +256,7 @@ class psycopg_build_ext(build_ext):
         self.have_ssl = have_ssl
         self.static_libpq = static_libpq
         self.pg_config = None
+        print('LB 4')
 
     def compiler_is_msvc(self):
         return self.get_compiler_name().lower().startswith('msvc')
@@ -285,7 +289,9 @@ class psycopg_build_ext(build_ext):
             return build_ext.get_export_symbols(self, extension)
 
     def build_extension(self, extension):
+        print('LB 5')
         build_ext.build_extension(self, extension)
+        print('LB 6')
         sysVer = sys.version_info[:2]
 
         # For Python versions that use MSVC compiler 2008, re-insert the
@@ -365,17 +371,22 @@ class psycopg_build_ext(build_ext):
 
     def finalize_linux(self):
         """Finalize build system configuration on GNU/Linux platform."""
+        print('LB 7')
         # tell piro that GCC is fine and dandy, but not so MS compilers
         for extension in self.extensions:
+            print('LB 7', extension)
             extension.extra_compile_args.append(
                 '-Wdeclaration-after-statement')
+        print('LB 8')
 
     finalize_linux2 = finalize_linux
     finalize_linux3 = finalize_linux
 
     def finalize_options(self):
         """Complete the build system configuration."""
+        print('LB 9')
         build_ext.finalize_options(self)
+        print('LB 10')
 
         pg_config_helper = PostgresConfig(self)
 
@@ -438,6 +449,7 @@ class psycopg_build_ext(build_ext):
             sys.stderr.write("Error: %s\n" % w)
             sys.exit(1)
 
+        print('LB 11')
         if hasattr(self, "finalize_" + sys.platform):
             getattr(self, "finalize_" + sys.platform)()
 
@@ -609,8 +621,8 @@ setup(name="psycopg2",
       data_files=data_files,
       package_dir={'psycopg2': 'lib', 'psycopg2.tests': 'tests'},
       packages=['psycopg2', 'psycopg2.tests'],
-      # cmdclass={
-      #     'build_ext': psycopg_build_ext,
-      #     'build_py': build_py,
-      # },
+      cmdclass={
+          'build_ext': psycopg_build_ext,
+          'build_py': build_py,
+      },
       ext_modules=ext)

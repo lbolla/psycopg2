@@ -239,10 +239,10 @@ class psycopg_build_ext(build_ext):
     ])
 
     boolean_options = build_ext.boolean_options[:]
-    boolean_options.extend(('use-pydatetime', 'have-ssl', 'static-libpq'))
+    # boolean_options.extend(('use-pydatetime', 'have-ssl', 'static-libpq'))
 
     def __init__(self, *args, **kwargs):
-        print('LB 1')
+        print('LB 1', args, kwargs)
         build_ext.__init__(self, *args, **kwargs)
         print('LB 1a')
 

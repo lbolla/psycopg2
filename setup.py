@@ -93,6 +93,15 @@ version_flags   = ['dt', 'dec']
 PLATFORM_IS_WINDOWS = sys.platform.lower().startswith('win')
 
 
+def logerr(*args, **kwargs):
+    import time
+    sys.stderr.write(*args, **kwargs)
+    sys.stderr.flush()
+    sys.stdout.write(*args, **kwargs)
+    sys.stdout.flush()
+    time.sleep(.1)
+
+
 class PostgresConfig:
     def __init__(self, build_ext):
         self.build_ext = build_ext
@@ -100,7 +109,7 @@ class PostgresConfig:
         if not self.pg_config_exe:
             self.pg_config_exe = self.autodetect_pg_config_path()
         if self.pg_config_exe is None:
-            sys.stderr.write("""\
+            logerr("""\
 Error: pg_config executable not found.
 
 Please add the directory containing pg_config to the PATH
@@ -374,10 +383,10 @@ class psycopg_build_ext(build_ext):
         """Finalize build system configuration on GNU/Linux platform."""
         print('LB 7')
         # tell piro that GCC is fine and dandy, but not so MS compilers
-        # for extension in self.extensions:
-        #     print('LB 7', extension)
-        #     extension.extra_compile_args.append(
-        #         '-Wdeclaration-after-statement')
+        for extension in self.extensions:
+            print('LB 7', extension)
+            extension.extra_compile_args.append(
+                '-Wdeclaration-after-statement')
         print('LB 8')
 
     finalize_linux2 = finalize_linux
@@ -423,7 +432,7 @@ class psycopg_build_ext(build_ext):
                 pgminor = int(pgminor)
                 pgpatch = int(pgpatch)
             else:
-                sys.stderr.write(
+                logerr(
                     "Error: could not determine PostgreSQL version from '%s'"
                                                                 % pgversion)
                 sys.exit(1)
@@ -447,7 +456,7 @@ class psycopg_build_ext(build_ext):
 
         except Warning:
             w = sys.exc_info()[1]  # work around py 2/3 different syntax
-            sys.stderr.write("Error: %s\n" % w)
+            logerr("Error: %s\n" % w)
             sys.exit(1)
 
         print('LB 11')
@@ -551,7 +560,7 @@ itself. If you installed Python or mx.DateTime from a binary package
 you probably need to install its companion -dev or -devel package."""
 
     for line in error_message.split("\n"):
-        sys.stderr.write("error: " + line)
+        logerr("error: " + line)
     sys.exit(1)
 
 # generate a nice version string to avoid confusion when users report bugs

@@ -226,20 +226,20 @@ class psycopg_build_ext(build_ext):
     If you want to set up the build step for a peculiar platform, add a
     method finalize_PLAT(), where PLAT matches your sys.platform.
     """
-    # user_options = build_ext.user_options[:]
-    # user_options.extend([
-    #     ('use-pydatetime', None,
-    #      "Use Python datatime objects for date and time representation."),
-    #     ('pg-config=', None,
-    #       "The name of the pg_config binary and/or full path to find it"),
-    #     ('have-ssl', None,
-    #      "Compile with OpenSSL built PostgreSQL libraries (Windows only)."),
-    #     ('static-libpq', None,
-    #      "Statically link the PostgreSQL client library"),
-    # ])
+    user_options = build_ext.user_options[:]
+    user_options.extend([
+        ('use-pydatetime', None,
+         "Use Python datatime objects for date and time representation."),
+        ('pg-config=', None,
+          "The name of the pg_config binary and/or full path to find it"),
+        ('have-ssl', None,
+         "Compile with OpenSSL built PostgreSQL libraries (Windows only)."),
+        ('static-libpq', None,
+         "Statically link the PostgreSQL client library"),
+    ])
 
-    # boolean_options = build_ext.boolean_options[:]
-    # boolean_options.extend(('use-pydatetime', 'have-ssl', 'static-libpq'))
+    boolean_options = build_ext.boolean_options[:]
+    boolean_options.extend(('use-pydatetime', 'have-ssl', 'static-libpq'))
 
     def __init__(self, *args, **kwargs):
         print('LB 1', args, kwargs)
@@ -565,11 +565,13 @@ if parser.has_option('build_ext', 'have_ssl'):
     have_ssl = int(parser.get('build_ext', 'have_ssl'))
 else:
     have_ssl = 0
+have_ssl = 0  # LB
 
 if parser.has_option('build_ext', 'static_libpq'):
     static_libpq = int(parser.get('build_ext', 'static_libpq'))
 else:
     static_libpq = 0
+static_libpq = 0  # LB
 
 # And now... explicitly add the defines from the .cfg files.
 # Looks like setuptools or some other cog doesn't add them to the command line

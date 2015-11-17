@@ -374,10 +374,10 @@ class psycopg_build_ext(build_ext):
         """Finalize build system configuration on GNU/Linux platform."""
         print('LB 7')
         # tell piro that GCC is fine and dandy, but not so MS compilers
-        for extension in self.extensions:
-            print('LB 7', extension)
-            extension.extra_compile_args.append(
-                '-Wdeclaration-after-statement')
+        # for extension in self.extensions:
+        #     print('LB 7', extension)
+        #     extension.extra_compile_args.append(
+        #         '-Wdeclaration-after-statement')
         print('LB 8')
 
     finalize_linux2 = finalize_linux
@@ -455,8 +455,8 @@ class psycopg_build_ext(build_ext):
             getattr(self, "finalize_" + sys.platform)()
 
         print('LB 12')
-        self._dry_run = True  # TODO
-        self.dry_run = True  # TODO
+        # self._dry_run = True  # TODO
+        self.dry_run = 1  # TODO
         from pprint import pprint
         pprint(self.__dict__)
 

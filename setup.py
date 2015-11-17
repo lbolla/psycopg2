@@ -244,6 +244,7 @@ class psycopg_build_ext(build_ext):
     def __init__(self, *args, **kwargs):
         print('LB 1')
         build_ext.__init__(self, *args, **kwargs)
+        print('LB 1a')
 
     def initialize_options(self):
         print('LB 2')

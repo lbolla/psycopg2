@@ -611,5 +611,6 @@ setup(name="psycopg2",
       packages=['psycopg2', 'psycopg2.tests'],
       cmdclass={
           'build_ext': psycopg_build_ext,
-          'build_py': build_py, },
+          # 'build_py': build_py,
+      },
       ext_modules=ext)

@@ -93,11 +93,12 @@ version_flags   = ['dt', 'dec']
 PLATFORM_IS_WINDOWS = sys.platform.lower().startswith('win')
 
 
-def logerr(*args, **kwargs):
+def logerr(msg):
     import time
-    sys.stderr.write(*args, **kwargs)
+    msg += '\n'
+    sys.stderr.write(msg)
     sys.stderr.flush()
-    sys.stdout.write(*args, **kwargs)
+    sys.stdout.write(msg)
     sys.stdout.flush()
     time.sleep(.1)
 
@@ -251,14 +252,14 @@ class psycopg_build_ext(build_ext):
     boolean_options.extend(('use-pydatetime', 'have-ssl', 'static-libpq'))
 
     def __init__(self, *args, **kwargs):
-        print('LB 1', args, kwargs)
+        logerr('LB 1')
         build_ext.__init__(self, *args, **kwargs)
-        print('LB 1a')
+        logerr('LB 1a')
 
     def initialize_options(self):
-        print('LB 2')
+        logerr('LB 2')
         build_ext.initialize_options(self)
-        print('LB 3')
+        logerr('LB 3')
         self.use_pg_dll = 1
         self.pgdir = None
         self.mx_include_dir = None
@@ -266,7 +267,7 @@ class psycopg_build_ext(build_ext):
         self.have_ssl = have_ssl
         self.static_libpq = static_libpq
         self.pg_config = None
-        print('LB 4')
+        logerr('LB 4')
 
     def compiler_is_msvc(self):
         return self.get_compiler_name().lower().startswith('msvc')
@@ -299,9 +300,9 @@ class psycopg_build_ext(build_ext):
             return build_ext.get_export_symbols(self, extension)
 
     def build_extension(self, extension):
-        print('LB 5')
+        logerr('LB 5')
         build_ext.build_extension(self, extension)
-        print('LB 6')
+        logerr('LB 6')
         sysVer = sys.version_info[:2]
 
         # For Python versions that use MSVC compiler 2008, re-insert the
@@ -381,22 +382,22 @@ class psycopg_build_ext(build_ext):
 
     def finalize_linux(self):
         """Finalize build system configuration on GNU/Linux platform."""
-        print('LB 7')
+        logerr('LB 7')
         # tell piro that GCC is fine and dandy, but not so MS compilers
         for extension in self.extensions:
-            print('LB 7', extension)
+            logerr('LB 7 ' + str(extension))
             extension.extra_compile_args.append(
                 '-Wdeclaration-after-statement')
-        print('LB 8')
+        logerr('LB 8')
 
     finalize_linux2 = finalize_linux
     finalize_linux3 = finalize_linux
 
     def finalize_options(self):
         """Complete the build system configuration."""
-        print('LB 9')
+        logerr('LB 9')
         build_ext.finalize_options(self)
-        print('LB 10')
+        logerr('LB 10')
 
         pg_config_helper = PostgresConfig(self)
 
@@ -459,13 +460,13 @@ class psycopg_build_ext(build_ext):
             logerr("Error: %s\n" % w)
             sys.exit(1)
 
-        print('LB 11')
+        logerr('LB 11')
         if hasattr(self, "finalize_" + sys.platform):
             getattr(self, "finalize_" + sys.platform)()
 
-        print('LB 12')
+        logerr('LB 12')
         # self._dry_run = True  # TODO
-        self.dry_run = 1  # TODO
+        # self.dry_run = 1  # TODO
         from pprint import pprint
         pprint(self.__dict__)
 

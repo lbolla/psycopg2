@@ -300,6 +300,7 @@ class psycopg_build_ext(build_ext):
             return build_ext.get_export_symbols(self, extension)
 
     def build_extension(self, extension):
+        import ipdb; ipdb.set_trace()  # BREAKPOINT
         logerr('LB 5')
         build_ext.build_extension(self, extension)
         logerr('LB 6')
@@ -601,15 +602,10 @@ for define in parser.get('build_ext', 'define').split(','):
 sources = [ os.path.join('psycopg', x) for x in sources]
 depends = [ os.path.join('psycopg', x) for x in depends]
 
-# ext.append(Extension("psycopg2._psycopg", sources,
-#                      define_macros=define_macros,
-#                      include_dirs=include_dirs,
-#                      depends=depends,
-#                      undef_macros=[]))
-ext.append(Extension("psycopg2._psycopg", [],
+ext.append(Extension("psycopg2._psycopg", sources,
                      define_macros=define_macros,
                      include_dirs=include_dirs,
-                     depends=[],
+                     depends=depends,
                      undef_macros=[]))
 
 # Compute the direct download url.

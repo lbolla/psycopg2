@@ -455,6 +455,8 @@ class psycopg_build_ext(build_ext):
             getattr(self, "finalize_" + sys.platform)()
 
         print('LB 12')
+        self._dry_run = True  # TODO
+        self.dry_run = True  # TODO
         from pprint import pprint
         pprint(self.__dict__)
         pprint(self.build_ext.__dict__)

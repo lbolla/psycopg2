@@ -454,6 +454,11 @@ class psycopg_build_ext(build_ext):
         if hasattr(self, "finalize_" + sys.platform):
             getattr(self, "finalize_" + sys.platform)()
 
+    def run(self):
+        import pdb; pdb.set_trace()  # BREAKPOINT
+        build_ext.run(self)
+
+
 def is_py_64():
     # sys.maxint not available since Py 3.1;
     # sys.maxsize not available before Py 2.6;
@@ -565,13 +570,11 @@ if parser.has_option('build_ext', 'have_ssl'):
     have_ssl = int(parser.get('build_ext', 'have_ssl'))
 else:
     have_ssl = 0
-have_ssl = 0  # LB
 
 if parser.has_option('build_ext', 'static_libpq'):
     static_libpq = int(parser.get('build_ext', 'static_libpq'))
 else:
     static_libpq = 0
-static_libpq = 0  # LB
 
 # And now... explicitly add the defines from the .cfg files.
 # Looks like setuptools or some other cog doesn't add them to the command line

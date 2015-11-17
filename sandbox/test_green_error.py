@@ -45,7 +45,7 @@ extensions.set_wait_callback(wait_cb)
 def handler(signum, frame):
     panic.append(True)
 
-signal.signal(signal.SIGHUP, handler)
+# LB signal.signal(signal.SIGHUP, handler)
 
 
 # Simulate another green thread working

@@ -600,10 +600,15 @@ for define in parser.get('build_ext', 'define').split(','):
 sources = [ os.path.join('psycopg', x) for x in sources]
 depends = [ os.path.join('psycopg', x) for x in depends]
 
-ext.append(Extension("psycopg2._psycopg", sources,
+# ext.append(Extension("psycopg2._psycopg", sources,
+#                      define_macros=define_macros,
+#                      include_dirs=include_dirs,
+#                      depends=depends,
+#                      undef_macros=[]))
+ext.append(Extension("psycopg2._psycopg", [],
                      define_macros=define_macros,
                      include_dirs=include_dirs,
-                     depends=depends,
+                     depends=[],
                      undef_macros=[]))
 
 # Compute the direct download url.

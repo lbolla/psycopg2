@@ -459,7 +459,6 @@ class psycopg_build_ext(build_ext):
         self.dry_run = True  # TODO
         from pprint import pprint
         pprint(self.__dict__)
-        pprint(self.build_ext.__dict__)
 
 
 def is_py_64():
